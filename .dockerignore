@@ -1,0 +1,11 @@
+.git
+.gitignore
+.env
+*.md
+target/
+!target/*.jar
+.idea/
+*.iml
+.vscode/
+node_modules/
+frontend/ 

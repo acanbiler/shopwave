@@ -31,3 +31,27 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Environment Variables ###
+.env
+.env.*
+!.env.example
+
+### Firebase ###
+firebase-credentials.json
+firebase-credentials.*
+!firebase-credentials.example.json
+
+### Logs ###
+*.log
+logs/
+
+### Docker ###
+.docker/
+docker-compose.override.yml
+
+### Node ###
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
