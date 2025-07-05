@@ -1,0 +1,34 @@
+{
+  "env": {
+    "AEFIS_ENV": "development"
+  },
+  "includeCoAuthoredBy": true,
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.anthropic.com)",
+      "mcp__context7__resolve-library-id",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(rg:*)",
+      "mcp__context7__get-library-docs",
+      "WebFetch(domain:docs.spring.io)",
+      "Bash(mkdir:*)",
+      "Bash(mvn clean:*)"
+    ],
+    "deny": [],
+    "allowedTools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "MultiEdit",
+      "Glob",
+      "Grep",
+      "LS",
+      "Task",
+      "WebFetch",
+      "WebSearch"
+    ]
+  }
+}

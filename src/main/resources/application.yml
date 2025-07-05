@@ -1,0 +1,166 @@
+spring:
+  application:
+    name: shopwave
+  
+  # Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shopwave_db
+    username: ${DB_USERNAME:shopwave}
+    password: ${DB_PASSWORD:shopwave}
+    driver-class-name: org.postgresql.Driver
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          time_zone: UTC
+  
+  # Virtual Threads Configuration
+  threads:
+    virtual:
+      enabled: true
+  
+  # Security Configuration
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:your-google-client-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:your-google-client-secret}
+            scope: openid,profile,email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: email
+  
+  # Mail Configuration
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:your-email@gmail.com}
+    password: ${MAIL_PASSWORD:your-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:mySecretKey12345678901234567890123456789012345678901234567890}
+  expiration: ${JWT_EXPIRATION:86400000} # 24 hours in milliseconds
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000} # 7 days in milliseconds
+  issuer: ${JWT_ISSUER:shopwave}
+
+# Payment Provider Configuration
+shopwave:
+  payment:
+    default-provider: iyzico
+    timeout-seconds: 30
+    webhook-timeout-seconds: 10
+    max-retry-attempts: 3
+    retry-delay-seconds: 5
+    providers:
+      iyzico:
+        api-key: ${IYZICO_API_KEY:sandbox-api-key}
+        secret-key: ${IYZICO_SECRET_KEY:sandbox-secret-key}
+        api-url: ${IYZICO_API_URL:https://sandbox-api.iyzipay.com}
+        test-mode: ${IYZICO_TEST_MODE:true}
+        webhook-secret: ${IYZICO_WEBHOOK_SECRET:webhook-secret}
+        timeout-seconds: 30
+
+# OpenAPI Configuration
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    display-request-duration: true
+    show-extensions: true
+    show-common-extensions: true
+    tags-sorter: alpha
+    operations-sorter: alpha
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+# Application Configuration
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:3001}
+    allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS}
+    allowed-headers: ${CORS_ALLOWED_HEADERS:*}
+    allow-credentials: true
+    max-age: 3600
+  
+  # File Upload Configuration
+  file:
+    upload-dir: ${FILE_UPLOAD_DIR:./uploads}
+    max-file-size: ${MAX_FILE_SIZE:10MB}
+    max-request-size: ${MAX_REQUEST_SIZE:10MB}
+  
+  # Rate Limiting Configuration
+  rate-limit:
+    enabled: true
+    requests-per-minute: ${RATE_LIMIT_REQUESTS:100}
+    burst-capacity: ${RATE_LIMIT_BURST:200}
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+      show-components: when-authorized
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true
+
+# Logging Configuration
+logging:
+  level:
+    com.acanbiler.shopwave: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/shopwave.log
+    max-size: 10MB
+    max-history: 30
+
+# Server Configuration
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api
+  compression:
+    enabled: true
+  http2:
+    enabled: true

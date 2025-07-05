@@ -1,0 +1,127 @@
+spring:
+  # Production Database Configuration
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:shopwave_db}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
+  
+  # JPA Configuration for production
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+        jdbc:
+          batch_size: 25
+          order_inserts: true
+          order_updates: true
+          batch_versioned_data: true
+  
+  # Production Mail Configuration
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: ${MAIL_HOST}
+
+# Production JWT Configuration
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION:86400000} # 24 hours
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000} # 7 days
+  issuer: ${JWT_ISSUER:shopwave}
+
+# Production Payment Configuration
+payment:
+  iyzico:
+    api-key: ${IYZICO_API_KEY}
+    secret-key: ${IYZICO_SECRET_KEY}
+    base-url: ${IYZICO_BASE_URL:https://api.iyzipay.com}
+    webhook-secret: ${IYZICO_WEBHOOK_SECRET}
+
+# Production CORS Configuration
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS}
+    allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS}
+    allowed-headers: ${CORS_ALLOWED_HEADERS:Authorization,Content-Type,X-Requested-With}
+    allow-credentials: true
+    max-age: 3600
+
+# Production Logging Configuration
+logging:
+  level:
+    com.acanbiler.shopwave: INFO
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+    org.springframework.web: WARN
+    org.springframework.transaction: WARN
+  pattern:
+    console: "%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: /var/log/shopwave/shopwave.log
+    max-size: 100MB
+    max-history: 30
+    total-size-cap: 1GB
+
+# Production Server Configuration
+server:
+  port: ${SERVER_PORT:8080}
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain,text/css,text/javascript,application/javascript
+  error:
+    include-stacktrace: never
+    include-message: never
+    include-binding-errors: never
+  http2:
+    enabled: true
+  ssl:
+    enabled: ${SSL_ENABLED:false}
+    key-store: ${SSL_KEY_STORE:}
+    key-store-password: ${SSL_KEY_STORE_PASSWORD:}
+    key-store-type: ${SSL_KEY_STORE_TYPE:PKCS12}
+
+# Production Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: never
+      show-components: never
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  info:
+    env:
+      enabled: false
+    java:
+      enabled: false
+    os:
+      enabled: false
