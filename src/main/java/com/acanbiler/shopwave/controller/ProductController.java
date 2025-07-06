@@ -35,7 +35,7 @@ import java.util.List;
  * filtering, inventory management, and review handling.
  */
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/products")
 @Tag(name = "Product Management", description = "Product catalog and inventory management operations")
 @Validated
 public class ProductController {

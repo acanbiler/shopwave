@@ -88,6 +88,11 @@ public class JwtUtil {
      */
     private String createToken(Map<String, Object> claims, String subject, Long expirationTime) {        
         return Jwts.builder()
+                .claims(claims)
+                .subject(subject)
+                .issuer(issuer)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getSigningKey(), Jwts.SIG.HS256)
                 .compact();
     }
@@ -164,9 +169,11 @@ public class JwtUtil {
      */
     private Claims extractAllClaims(String token) {
         try {
-            // Simple implementation for now - will be replaced with proper JWT parsing
-            // This is a placeholder to get compilation working
-            return Jwts.claims().build();
+            return Jwts.parser()
+                    .verifyWith(getSigningKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
         } catch (Exception e) {
             System.err.println("JWT token parsing failed: " + e.getMessage());
             throw new RuntimeException("JWT token parsing failed", e);

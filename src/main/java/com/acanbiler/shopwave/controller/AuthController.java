@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
  * and JWT token management with comprehensive validation and error handling.
  */
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @Tag(name = "Authentication", description = "User authentication and authorization operations")
 @Validated
 public class AuthController {
@@ -150,6 +150,7 @@ public class AuthController {
         
         return ResponseEntity.ok(response);
     }
+
 
     // DTOs for API requests and responses
 

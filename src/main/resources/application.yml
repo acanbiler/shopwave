@@ -4,7 +4,7 @@ spring:
   
   # Database Configuration
   datasource:
-    url: jdbc:postgresql://localhost:5432/shopwave_db
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/shopwave_db}
     username: ${DB_USERNAME:shopwave}
     password: ${DB_PASSWORD:shopwave}
     driver-class-name: org.postgresql.Driver
@@ -22,10 +22,15 @@ spring:
         jdbc:
           time_zone: UTC
   
-  # Virtual Threads Configuration
+  # Virtual Threads Configuration (disabled for Java 17 compatibility)
   threads:
     virtual:
-      enabled: true
+      enabled: false
+  
+  # SQL Initialization
+  sql:
+    init:
+      mode: always
   
   # Security Configuration
   security:
@@ -104,7 +109,7 @@ springdoc:
 # Application Configuration
 app:
   cors:
-    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:3001}
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:https://yourusername.github.io,http://localhost:3000,http://localhost:3001}
     allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS}
     allowed-headers: ${CORS_ALLOWED_HEADERS:*}
     allow-credentials: true
@@ -147,6 +152,8 @@ logging:
     org.springframework.security: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.web: DEBUG
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
   pattern:
     console: "%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n"
@@ -157,10 +164,14 @@ logging:
 
 # Server Configuration
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${PORT:8085}
   servlet:
     context-path: /api
   compression:
     enabled: true
   http2:
     enabled: true
+  error:
+    include-exception: true
+    include-stacktrace: always
+    include-message: always

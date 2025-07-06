@@ -88,10 +88,10 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authz -> authz
                 // Public endpoints
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/products/**").permitAll()
-                .requestMatchers("/api/reviews/**").permitAll()
-                .requestMatchers("/api/statistics/**").permitAll()
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/products/**").permitAll()
+                .requestMatchers("/reviews/**").permitAll()
+                .requestMatchers("/statistics/**").permitAll()
                 
                 // OpenAPI documentation endpoints
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
@@ -104,20 +104,20 @@ public class SecurityConfig {
                 .requestMatchers("/login/oauth2/**", "/oauth2/**").permitAll()
                 
                 // Admin endpoints
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/users/**").hasRole("ADMIN")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/users/**").hasRole("ADMIN")
                 
                 // Customer endpoints
-                .requestMatchers("/api/payments/**").hasAnyRole("CUSTOMER", "ADMIN")
-                .requestMatchers("/api/notifications/**").hasAnyRole("CUSTOMER", "ADMIN")
+                .requestMatchers("/payments/**").hasAnyRole("CUSTOMER", "ADMIN")
+                .requestMatchers("/notifications/**").hasAnyRole("CUSTOMER", "ADMIN")
                 
                 // All other endpoints require authentication
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2
                 .loginPage("/login")
-                .defaultSuccessUrl("/api/auth/oauth2/success", true)
-                .failureUrl("/api/auth/oauth2/failure")
+                .defaultSuccessUrl("/auth/oauth2/success", true)
+                .failureUrl("/auth/oauth2/failure")
             )
             .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
             .build();
@@ -149,7 +149,7 @@ public class SecurityConfig {
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
+        return new BCryptPasswordEncoder(10);
     }
 
     /**
@@ -235,13 +235,13 @@ public class SecurityConfig {
         protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
             String path = request.getRequestURI();
             return path.startsWith("/api/auth/") || 
-                   path.startsWith("/swagger-ui/") || 
-                   path.startsWith("/v3/api-docs/") || 
-                   path.equals("/swagger-ui.html") ||
-                   path.startsWith("/actuator/health") ||
-                   path.startsWith("/actuator/info") ||
-                   path.startsWith("/login/oauth2/") ||
-                   path.startsWith("/oauth2/");
+                   path.startsWith("/api/swagger-ui/") || 
+                   path.startsWith("/api/v3/api-docs/") || 
+                   path.equals("/api/swagger-ui.html") ||
+                   path.startsWith("/api/actuator/health") ||
+                   path.startsWith("/api/actuator/info") ||
+                   path.startsWith("/api/login/oauth2/") ||
+                   path.startsWith("/api/oauth2/");
         }
     }
 }

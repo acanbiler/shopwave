@@ -23,7 +23,7 @@ import java.util.List;
  * and reporting capabilities for administrators with proper security controls.
  */
 @RestController
-@RequestMapping("/api/statistics")
+@RequestMapping("/statistics")
 @Tag(name = "Statistics & Analytics", description = "Business analytics and reporting operations")
 @SecurityRequirement(name = "Bearer Authentication")
 @PreAuthorize("hasRole('ADMIN')")

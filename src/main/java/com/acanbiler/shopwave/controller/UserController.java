@@ -32,7 +32,7 @@ import java.util.List;
  * and administrative functions with proper authorization controls.
  */
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 @Tag(name = "User Management", description = "User administration and profile management operations")
 @SecurityRequirement(name = "Bearer Authentication")
 @Validated

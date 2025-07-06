@@ -7,9 +7,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 /**
  * Main Spring Boot application class for ShopWave.
@@ -26,6 +26,7 @@ import java.util.concurrent.Executors;
 @EnableAsync
 @EnableScheduling
 @EnableTransactionManagement
+@ComponentScan(basePackages = "com.acanbiler.shopwave")
 public class ShopWaveApplication {
 
     /**
@@ -38,16 +39,22 @@ public class ShopWaveApplication {
     }
 
     /**
-     * Configure virtual thread executor for async processing.
+     * Configure thread executor for async processing.
      * 
-     * Virtual threads provide better performance for I/O-bound operations
-     * and are especially beneficial for web applications with many concurrent requests.
+     * Uses virtual threads in Java 21+ or traditional thread pool in Java 17.
      * 
-     * @return virtual thread executor
+     * @return thread executor
      */
     @Bean(name = "taskExecutor")
     public Executor taskExecutor() {
-        return Executors.newVirtualThreadPerTaskExecutor();
+        // For Java 17 compatibility - use thread pool instead of virtual threads
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(10);
+        executor.setMaxPoolSize(50);
+        executor.setQueueCapacity(200);
+        executor.setThreadNamePrefix("ShopWave-Async-");
+        executor.initialize();
+        return executor;
     }
 
     /**

@@ -1,14 +1,14 @@
 -- Initial data setup for ShopWave application
 -- This file is executed when the application starts (only if spring.sql.init.mode is set to 'always')
 
--- Insert admin user
+-- Insert admin user (password: secret)
 INSERT INTO users (id, email, password, first_name, last_name, role, created_at, updated_at, enabled) 
-VALUES (1, 'admin@shopwave.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'Admin', 'User', 'ADMIN', NOW(), NOW(), true) 
+VALUES (1, 'admin@shopwave.com', '$2a$10$nw8YLMMLlcI/6bBj1mZqguBbCKTPwOgute4DNbVMAf8xes53bpGge', 'Admin', 'User', 'ADMIN', NOW(), NOW(), true) 
 ON CONFLICT (id) DO NOTHING;
 
--- Insert test customer
+-- Insert test customer (password: secret)
 INSERT INTO users (id, email, password, first_name, last_name, role, created_at, updated_at, enabled) 
-VALUES (2, 'customer@shopwave.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'Test', 'Customer', 'CUSTOMER', NOW(), NOW(), true) 
+VALUES (2, 'customer@shopwave.com', '$2a$10$nw8YLMMLlcI/6bBj1mZqguBbCKTPwOgute4DNbVMAf8xes53bpGge', 'Test', 'Customer', 'CUSTOMER', NOW(), NOW(), true) 
 ON CONFLICT (id) DO NOTHING;
 
 -- Insert sample products

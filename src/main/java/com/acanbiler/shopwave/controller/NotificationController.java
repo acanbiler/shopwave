@@ -32,7 +32,7 @@ import java.util.List;
  * bulk messaging, and notification analytics with proper authorization controls.
  */
 @RestController
-@RequestMapping("/api/notifications")
+@RequestMapping("/notifications")
 @Tag(name = "Notification Management", description = "User notification and messaging operations")
 @SecurityRequirement(name = "Bearer Authentication")
 @Validated

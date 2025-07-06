@@ -33,7 +33,7 @@ import java.util.List;
  * refunds, and payment analytics with proper security controls.
  */
 @RestController
-@RequestMapping("/api/payments")
+@RequestMapping("/payments")
 @Tag(name = "Payment Management", description = "Payment processing and transaction management operations")
 @SecurityRequirement(name = "Bearer Authentication")
 @Validated
